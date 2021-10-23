@@ -19,7 +19,6 @@ if __name__ == '__main__':
     if len(sys.argv) < 5:
         print("N (10000), M (1000), inf (0), sup (1)")
     else:
-        # getting number of iterations as command-line arguments 
         N = int(sys.argv[1])
         M = int(sys.argv[2])
         inf = int(sys.argv[3])
@@ -38,5 +37,3 @@ if __name__ == '__main__':
                   weight='bold', fontsize=16)
         plt.savefig('./Results/entropy_vs_p0.png', dpi=400)
         #plt.show()
-
-

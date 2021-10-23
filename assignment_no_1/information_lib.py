@@ -35,4 +35,3 @@ def norm_mutual_information2(pxy: np.ndarray, px: np.array, py: np.array) -> flo
 
 def norm_mutual_information3(pxy: np.ndarray, px: np.array, py: np.array) -> float:
     return mutual_information(pxy, px, py) / np.sqrt(entropy(px) * entropy(py))
-
