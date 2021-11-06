@@ -9,16 +9,16 @@ def joint_entropy(pxy: np.ndarray) -> float:
     return - np.nansum(pxy * np.log2(pxy))
 
 
-def conditional_entropy(pxy1: np.ndarray, pxy2: np.ndarray) -> float:
-    return - np.nansum(pxy1 * np.log2(pxy2))
+def conditional_entropy(pxy: np.ndarray, px: np.array) -> float:
+    return joint_entropy(pxy) - entropy(px)
 
 
 def mutual_information(pxy: np.ndarray, px: np.array, py: np.array) -> float:
     return entropy(px) + entropy(py) - joint_entropy(pxy)
 
 
-def norm_cond_entropy(pxy1: np.ndarray, pxy2: np.ndarray, px1: np.array) -> float:
-    return conditional_entropy(pxy1, pxy2) / entropy(px1)
+def norm_cond_entropy(pxy: np.ndarray, px: np.array) -> float:
+    return conditional_entropy(pxy, px) / entropy(px)
 
 
 def norm_joint_entropy(pxy: np.ndarray, px: np.array, py: np.array) -> float:
