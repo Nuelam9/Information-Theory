@@ -1,6 +1,9 @@
 # Ignore start folder (old code versions)
 start/
 
+# Ignore folder with some example codes
+pmf pdf estimation/
+
 # Ignore Data folder (big files)
 prove.ipynb
 
