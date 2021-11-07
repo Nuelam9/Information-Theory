@@ -5,14 +5,27 @@ from information_lib import entropy
 
 
 def random_data_gen(x: float) -> np.array:
-    """
-    generate random numbers between 
-    inf and sup with a corresponding probability
+    """Generate random numbers between inf and sup with a given 
+       probability x.
+
+    Args:
+        x (float): probability
+
+    Return:
+        np.array: random numbers between inf and sup
     """
     return np.random.choice(a=[inf, sup], size=N, p=[x, 1 - x])
 
 
-def prob(x: float) -> np.array:
+def prob(x: np.array) -> np.array:
+    """Compute the probability to get inf or sup.
+
+    Args:
+        x (np.array): random numbers between inf and sup
+
+    Return:
+        np.array: probability of inf and sup
+    """
     return np.array([len(x[x == inf]) / len(x),
                      len(x[x == sup]) / len(x)])
 
