@@ -4,9 +4,11 @@ import matplotlib.pyplot as plt
 from information_lib import entropy
 
 
-# np.random.choice() function generate random numbers between 
-# inf and sup with a corresponding probability
-def f(x: float) -> np.array:
+def random_data_gen(x: float) -> np.array:
+    """
+    generate random numbers between 
+    inf and sup with a corresponding probability
+    """
     return np.random.choice(a=[inf, sup], size=N, p=[x, 1 - x])
 
 
@@ -25,7 +27,7 @@ if __name__ == '__main__':
         sup = int(sys.argv[4])    
     
         p0 = np.linspace(inf, sup, M)
-        x =  list(map(f, p0))
+        x =  list(map(random_data_gen, p0))
         pk = list(map(prob, x))
         h = list(map(entropy, pk))
         
