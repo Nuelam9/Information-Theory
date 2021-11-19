@@ -10,7 +10,7 @@ def entropy(px: np.array) -> float:
         px (np.array): p.m.f.
 
     Return:
-        float: entropy
+        float: entropy (bits units)
     """
     return - np.nansum(px * np.log2(px))
 
@@ -23,7 +23,7 @@ def joint_entropy(pxy: np.ndarray) -> float:
         pxy (np.ndarray): joint p.m.f.
 
     Return:
-        float: joint entropy
+        float: joint entropy (bits units)
     """
     return - np.nansum(pxy * np.log2(pxy))
 
@@ -39,9 +39,9 @@ def conditional_entropy(pxy: np.ndarray, py: np.array) -> float:
         py (np.array): marginal p.m.f. of r.v. Y
 
     Return:
-        float: conditional entropy
+        float: conditional entropy (bits units)
     """
-    return joint_entropy(pxy) - entropy(py)
+    return joint_entropy(pxy) - entropy(py) 
 
 
 def mutual_information(pxy: np.ndarray, px: np.array, py: np.array) -> float:
@@ -56,7 +56,7 @@ def mutual_information(pxy: np.ndarray, px: np.array, py: np.array) -> float:
         py (np.array): marginal p.m.f. of r.v. Y
 
     Return:
-        float: mutual information
+        float: mutual information (bits units)
     """
     return entropy(px) + entropy(py) - joint_entropy(pxy)
 
@@ -73,7 +73,7 @@ def norm_cond_entropy(pxy: np.ndarray, px: np.array) -> float:
         px (np.array): marginal p.m.f. of r.v. X
 
     Return:
-        float: normalized conditional entropy
+        float: normalized conditional entropy (bits units)
     """
     return conditional_entropy(pxy, px) / entropy(px)
 
@@ -91,7 +91,7 @@ def norm_joint_entropy(pxy: np.ndarray, px: np.array, py: np.array) -> float:
         py (np.array): marginal p.m.f. of r.v. Y
 
     Return:
-        float: normalized joint entropy
+        float: normalized joint entropy (bits units)
     """
     return 1. - mutual_information(pxy, px, py) / (entropy(px) + entropy(py))
 
@@ -109,7 +109,7 @@ def norm_mutual_information1(pxy: np.ndarray, px: np.array, py: np.array) -> flo
         py (np.array): marginal p.m.f. of r.v. Y
 
     Return:
-        float: normalized mutual information of type 1
+        float: normalized mutual information of type 1 (bits units)
     """
     return 1. / norm_joint_entropy(pxy, px, py) - 1.
 
@@ -127,7 +127,7 @@ def norm_mutual_information2(pxy: np.ndarray, px: np.array, py: np.array) -> flo
         py (np.array): marginal p.m.f. of r.v. Y
 
     Return:
-        float: normalized mutual information of type 2
+        float: normalized mutual information of type 2 (bits units)
     """
     return 1. + norm_mutual_information1(pxy, px, py)
 
@@ -145,6 +145,6 @@ def norm_mutual_information3(pxy: np.ndarray, px: np.array, py: np.array) -> flo
         py (np.array): marginal p.m.f. of r.v. Y
 
     Return:
-        float: normalized mutual information of type 3
+        float: normalized mutual information of type 3 (bits units)
     """
     return mutual_information(pxy, px, py) / np.sqrt(entropy(px) * entropy(py))
