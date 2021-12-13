@@ -1,3 +1,6 @@
+# Ignore Lectures folder
+Lectures/
+
 # Ignore start folder (old code versions)
 start/
 
