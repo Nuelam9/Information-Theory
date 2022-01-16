@@ -25,5 +25,5 @@ if __name__ == '__main__':
         plt.title("Entropy for a generic binary random variable",
                   weight='bold', fontsize=16)
         file = os.path.basename(__file__).split('.')[0]
-        plt.savefig(f'../Results/{file}/entropy_vs_p0.png', dpi=800)
+        plt.savefig(f'../results/{file}/entropy_vs_p0.png', dpi=800)
         #plt.show()
