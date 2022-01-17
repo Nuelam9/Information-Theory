@@ -15,7 +15,7 @@ if __name__ == '__main__':
     
         p0 = np.linspace(inf, sup, M)
         x = [random_data_gen(_, inf, sup, N) for _ in p0]
-        pk = [prob(_, inf, sup) for _ in x]
+        pk = list(map(prob, x))
         h = list(map(entropy, pk))
         
         #plt.figure(figsize=(15, 10))
