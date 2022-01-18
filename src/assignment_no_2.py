@@ -2,7 +2,6 @@
 import numpy as np
 import os
 from lib.information_lib import diff_entropy
-from lib.utils import pmf_univariate
 from lib.pdf_estimation import kde_estimate
 import matplotlib.pyplot as plt
 from lib.analysis_plot import *
@@ -52,6 +51,6 @@ if __name__ == '__main__':
     fig.tight_layout()
     plt.show()
     file = os.path.basename(__file__).split('.')[0]
-    #plt.savefig(f'../results/{file}.png', dpi=600)
+    #plt.savefig(f'../results/{file}/Differential_entropy.png', dpi=600)
 
     print(f'The real entropy is: {RealEntropy}')
