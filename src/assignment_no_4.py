@@ -13,13 +13,11 @@ if __name__ == "__main__":
 
     # Encode the species from (setosa, versicolor, virginica) to (0, 1, 2)
     codes = {'setosa': 0, 'versicolor': 1, 'virginica': 2}
-    # Save the encoding to go back
-    decode = {0: 'setosa', 1: 'versicolor', 2: 'virginica'}
 
     # Apply the econding for the for the species class
     df_cp['species'] = df_cp['species'].map(codes)
 
-    X, y = df_cp.to_numpy()[:, :-1], df_cp.to_numpy()[:, -1]
+    X, y = df_cp.to_numpy()[:, :-1], df_cp.to_numpy(dtype=int)[:, -1]
     X_train, X_test, y_train, y_test = train_test_split(X, y, 
                                                         train_size=0.5,  # 50% of train and test set
                                                         random_state=12, # randomly shuffling instances
@@ -29,11 +27,20 @@ if __name__ == "__main__":
     print(np.unique(y_train, return_counts=True),
           np.unique(y_test, return_counts=True))
 
-    # Instantiating a Bayes classifier
-    BC = Bayes_Classifier()
-    # Fit the data with the model
-    BC.fit(X_train, y_train)
-    # Get the prediction on the test set
-    BC_pred = BC.evaluate(X_test)
+    # Apply a Bayes classifier and get the prediction on the test set with
+    B_prediction = Bayes(X_train, X_test, y_train)
     # Compute the model acccuracy
-    BC_acc = metrics.accuracy_score(BC_pred, y_test)
+    B_acc = metrics.accuracy_score(B_prediction, y_test)
+
+    # Apply a Naive Bayes classifier and get the prediction on the test set with
+    NB_prediction = Naive_Bayes(X_train, X_test, y_train)
+    # Compute the model acccuracy
+    NB_acc = metrics.accuracy_score(NB_prediction, y_test)
+
+    # Apply a Naive Bayes classifier and get the prediction on the test set with
+    NBG_prediction = Naive_Bayes_gaussian(X_train, X_test, y_train)
+    # Compute the model acccuracy
+    NBG_acc = metrics.accuracy_score(NBG_prediction, y_test)
+
+    # Print all the models accuracy
+    print(f'Bayes, Naive Bayes, Naive Bayes Gaussian: {B_acc}, {NB_acc}, {NBG_acc}')
