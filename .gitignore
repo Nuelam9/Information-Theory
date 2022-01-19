@@ -1,14 +1,8 @@
 # Ignore Lectures folder
 Lectures/
 
-# Ignore start folder (old code versions)
-start/
-
-# Ignore folder with some example codes
-pmf pdf estimation/
-
 # Ignore Data folder (big files)
-prove.ipynb
+assignment_no_4.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
