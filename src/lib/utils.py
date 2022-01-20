@@ -1,20 +1,18 @@
 import numpy as np
 
 
-def random_data_gen(x: float, inf: int, sup: int, N: int) -> np.array:
+def random_data_gen(x: float, N: int) -> np.array:
     """Generate random numbers between inf and sup with a given 
        probability x.
 
     Args:
         x (float): probability
-        inf (int): lower bound of probability interval
-        sup (int): upper bound of probability
         N (int): desired size of random data
 
     Return:
         np.array: random numbers between inf and sup
     """
-    return np.random.choice(a=[inf, sup], size=N, p=[x, 1 - x])
+    return np.random.choice(a=[0, 1], size=N, p=[x, 1 - x])
 
 
 def prob(x: np.array) -> np.array:
