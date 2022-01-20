@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 
 if __name__ == "__main__":
     df = sns.load_dataset("iris")
-
+    
     # Work on a copy of the dataframe
     df_cp = df.copy()
 
@@ -17,7 +17,12 @@ if __name__ == "__main__":
     # Apply the econding for the for the species class
     df_cp['species'] = df_cp['species'].map(codes)
 
-    X, y = df_cp.to_numpy()[:, :-1], df_cp.to_numpy(dtype=int)[:, -1]
+    # Convert features columns in numpy arrays   
+    X = df_cp.to_numpy()[:, :-1]
+    # Convert the class label column in as an integer numpy array
+    y = df_cp.to_numpy(dtype=int)[:, -1]
+
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, 
                                                         train_size=0.5,  # 50% of train and test set
                                                         random_state=12, # randomly shuffling instances
