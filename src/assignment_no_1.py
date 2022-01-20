@@ -4,26 +4,30 @@ import os
 from lib.utils import *
 import numpy as np
 import matplotlib.pyplot as plt
+from lib.analysis_plot import *
 from lib.information_lib import entropy
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 5:
-        print("N (10000), M (1000), inf (0), sup (1)")
+    # Read the input from the terminal for the size of random data (N) 
+    # and the number of samples to generate for p0 (M)
+    if len(sys.argv) != 3:
+        print("N (10000), M (1000)")
     else:
-        M, N, inf, sup = np.int32(sys.argv[1:])
-    
-        p0 = np.linspace(inf, sup, M)
-        x = [random_data_gen(_, inf, sup, N) for _ in p0]
+        M, N = np.int32(sys.argv[1:])
+        
+        p0 = np.linspace(0, 1, M)
+        x = [random_data_gen(p, N) for p in p0]
         pk = list(map(prob, x))
         h = list(map(entropy, pk))
         
-        #plt.figure(figsize=(15, 10))
-        plt.plot(p0, h, 'b-')
-        plt.xlabel(r'$ \mathbf{p_{0}} $', fontsize=14)
-        plt.ylabel(r'$ \mathbf{H_{2}(p_{0})\hspace{0.2}[bit]} $', fontsize=14)
-        plt.title("Entropy for a generic binary random variable",
-                  weight='bold', fontsize=16)
+        plot_settings() # for latex document
+        plt.plot(p0, h, 'b-', lw=0.5)
+        plt.xlabel(r'$ \mathbf{p_{0}} $')
+        plt.ylabel(r'$ \mathbf{H_{2}(p_{0})\hspace{0.2}[bit]} $')
+        #plt.title("Entropy for a generic binary random variable",
+                  #weight='bold')
+        plt.tight_layout()
         file = os.path.basename(__file__).split('.')[0]
-        plt.savefig(f'../results/{file}/entropy_vs_p0.png', dpi=800)
+        plt.savefig(f'../Results/{file}/entropy_vs_p0.png', dpi=800)
         #plt.show()
