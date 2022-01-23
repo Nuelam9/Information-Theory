@@ -65,7 +65,7 @@ def Naive_Bayes(X_train, X_test, y_train):
         return np.argmax(c, axis=1)
     
 
-def Naive_Bayes_gaussian(X_train, X_test, y_train):
+def Gaussian_Naive_Bayes(X_train, X_test, y_train):
     n_X = X_train.shape[1]
     n_classes = np.unique(y_train).size
     classes = np.unique(y_train)
