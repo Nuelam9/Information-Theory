@@ -8,10 +8,10 @@ from typing import Tuple
 def doane_formula(data: np.array) -> float:
     """
     Compute the optimal bin width with the Doane's formula:
-    k = 1 + \log_{2}(n) + \log_{2}\left (1 + \frac{\left |g_{1}  
-    \right |}{\sigma_{g_{1}}}  \right )
-    where g_{1} is the 3rd-moment-skewness and 
-    \sigma_{g_{1}} = \sqrt{\frac{6(n - 2)}{(n + 1)(n + 3)}}
+
+    k = 1 + log_2(n) + log_2(n) * (1 + |g_1| / sigma_{g_1})
+    where g_1 is the 3rd-moment-skewness and 
+    sigma_{g_1} = sqrt{6 * (n - 2) / [(n + 1)(n + 3)]}
 
     Args:
         data (np.array): data whose bin is being sought
