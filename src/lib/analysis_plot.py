@@ -1,4 +1,5 @@
 import matplotlib as mpl
+from matplotlib import ticker
 import numpy as np
 from sklearn.neighbors import KernelDensity
 
@@ -13,12 +14,23 @@ def plot_settings():
     params = {'backend': 'ps',
               'axes.labelsize': 14,
               'legend.fontsize': 9,
-              'xtick.labelsize': 10,
-              'ytick.labelsize': 10,
+              'xtick.labelsize': 10, 
+              'ytick.labelsize': 10, 
               'figure.figsize': fig_size,  
               'axes.axisbelow': True}
 
     mpl.rcParams.update(params)
+
+
+def power_10_axis_formatter(ax, axis):
+    from matplotlib import ticker
+    formatter = ticker.ScalarFormatter(useMathText=True)
+    formatter.set_scientific(True) 
+    formatter.set_powerlimits((-1, 1))
+    if axis == 'x':
+        ax.xaxis.set_major_formatter(formatter) 
+    elif axis == 'y':
+        ax.yaxis.set_major_formatter(formatter) 
 
 
 def plot_kernels(ax):
