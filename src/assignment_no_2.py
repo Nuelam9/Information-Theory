@@ -46,7 +46,7 @@ if __name__ == '__main__':
         lh.set_linewidth(2)
 
     axs[0].set_ylabel(r'$ \mathbf{H_{2}(p_{0})\hspace{0.2}[bit]} $')
-    axs[1].set_ylabel(r'$ \mathbf{(differentH_{2}(p_{0})-H_{2}(\hat{p_{0}}))\hspace{0.2}[bit]} $')
+    axs[1].set_ylabel(r'$ \mathbf{(H_{2}(p_{0})-H_{2}(\hat{p_{0}}))\hspace{0.2}[bit]} $')
     power_10_axis_formatter(axs[1], 'y')
 
     file = os.path.basename(__file__).split('.')[0]
