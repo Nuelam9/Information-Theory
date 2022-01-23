@@ -29,7 +29,16 @@ def prob(x: np.array) -> np.array:
     return freq / n
 
 
-def Gaussian(x, muj, varj):
-    prod = np.exp(- 0.5 * (x - muj) ** 2 / (2 * varj))
-    prod *= np.sqrt(2. * np.pi * varj)
-    return prod
+def Gaussian(x: np.array, muj: float, varj: float) -> np.array:
+    """Compute the the Gaussian density function of a vector x
+
+    Args:
+        x (np.array): features vector
+        muj (float): mean
+        varj (float): variance
+
+    Returns:
+        np.array: [description]
+    """   
+    pdf = np.sqrt(2. * np.pi * varj) * np.exp(- 0.5 * (x - muj) ** 2. / varj)
+    return pdf
