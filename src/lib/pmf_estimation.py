@@ -1,8 +1,17 @@
+#!/usr/bin/env python3.9.5
 import numpy as np
 import pandas as pd
 
 
-def pmf_univariate(samples):
+def pmf_univariate(samples: np.array) -> np.array:
+    """Compute the probability of each element of samples.
+
+    Args:
+        x (np.array): random numbers vector
+
+    Return:
+        np.array: probability of each element of samples
+    """
     n = len(samples)
     samples_list, pmf_vector = np.unique(samples, return_counts=True)
     return samples_list, pmf_vector / n
