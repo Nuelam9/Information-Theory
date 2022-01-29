@@ -1,10 +1,8 @@
-import matplotlib as mpl
-from matplotlib import ticker
-import numpy as np
-from sklearn.neighbors import KernelDensity
+#!/usr/bin/env python3.9.5
 
 
 def plot_settings():
+    import matplotlib as mpl
     fig_width_pt = 390.0    # Get this from LaTeX using \the\columnwidth
     inches_per_pt = 1.0 / 72.27                # Convert pt to inches
     golden_mean = (np.sqrt(5) - 1.0) / 2.0     # Aesthetic ratio
@@ -35,6 +33,8 @@ def power_10_axis_formatter(ax, axis):
 
 def plot_kernels(ax):
     """Visualize the KDE kernels available in Scikit-learn"""
+    import numpy as np
+    from sklearn.neighbors import KernelDensity
     ax.grid()
 
     X_src = np.zeros((1, 1))
