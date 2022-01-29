@@ -1,13 +1,34 @@
 #!/usr/bin/env python3.9.5
-import numpy as np
-import os
 from lib.information_lib import Entropy, Diff_entropy
+from multiprocessing import Pool, cpu_count
 from lib.pdf_estimation import kde_estimate
-import matplotlib.pyplot as plt
 from lib.utils import random_data_gen, prob
 from lib.analysis_plot import *
-from scipy.stats import norm
+from itertools import product
 import pandas as pd
+import numpy as np
+import os
+
+
+def sampling(n: int, bw_method: str, kernel: str) -> float:
+    """Get the differential entropy of random variable vector sampled
+       from a gaussian distribution with mean = 0 and variance = 1.
+
+    Args:
+        n (int): samples size
+        bw_method (str): binwidht method
+        kernel (str): kernel function 
+
+    Returns:
+        [float]: differential entropy with a given n, binwidht method
+                 and kernel function 
+    """
+    # Samples generated through a gaussian p.d.f.
+    # with mean = 0, variance = 1
+    samples = np.random.normal(loc=0.0, scale=1.0, size=n)
+    # Apply the kernel density estimation
+    x, est_pdf = kde_estimate(samples, kernel, bw_method)
+    return Diff_entropy(est_pdf, x)
 
 
 if __name__ == '__main__': 
@@ -18,85 +39,59 @@ if __name__ == '__main__':
 
     # Computing the Entropy of the truth p.m.f.
     entropy = list(map(Entropy, p))
-         
-    plot_settings() # for latex document
-    fig, axs = plt.subplots(1, 2, constrained_layout=True)
-    axs[0].plot(p0, entropy, 'b', lw=0.7, label='truth p.m.f.')
-    
+
+    # Define the N samples size array
+    n_samples = 10 ** np.arange(2, 6)
+
+    est_entropies = []
     # Cycle over the size of random data (N)
-    for N in 10 ** np.arange(2, 6):
+    for N in n_samples:
         # Computing the entropy for the p0 values contained in p array
         x = [random_data_gen(p, N) for p in p0]
         # Compute the estimated pmf
         pk = list(map(prob, x))
         # Compute the entropy from the estimated p.m.f.
         est_entropy = list(map(Entropy, pk))
-        entropy_diff = [h - h_est for h, h_est in zip(entropy, est_entropy)]
-        esp = int(np.log10(N))
-        axs[0].plot(p0, est_entropy, lw=0.7, 
-                    label=f'N=$ 10^{esp} $')
-        axs[1].plot(p0, entropy_diff, lw=0.7)
-    
-    for i in range(2):
-        axs[i].set_xlabel(r'$ \mathbf{p_{0}} $')
-        axs[i].grid()
-    
-    leg = axs[0].legend()
-    for lh in leg.legendHandles: 
-        lh.set_linewidth(2)
+        est_entropies.append(est_entropy)
 
-    axs[0].set_ylabel(r'$ \mathbf{H_{2}(p_{0})\hspace{0.2}[bit]} $')
-    axs[1].set_ylabel(r'$ \mathbf{(H_{2}(p_{0})-H_{2}(\hat{p_{0}}))\hspace{0.2}[bit]} $')
-    power_10_axis_formatter(axs[1], 'y')
+    # Saving the results for the entropies as .csv file
+    n = len(n_samples)
+    res = np.zeros((M*n, 2))
 
+    for i, N in enumerate(n_samples):
+        res[M*i:M*(i+1), :] = np.column_stack(([N]*M, est_entropies[i]))
+        
+    df = pd.DataFrame(res, columns=['n_samples', 'est_entropy'])
+
+    tmp = [np.subtract(entropy, h_est) for h_est in est_entropies]
+    difference = [item for sublist in tmp for item in sublist]
+
+    df['difference'] = difference
     file = os.path.basename(__file__).split('.')[0]
-    plt.savefig(f'../Results/{file}/estimated_entropy_vs_p0.png', dpi=800)
-    plt.clf()
-    plt.close()
+    df.to_csv(f'../Results/{file}/samples_entropy_1.csv', index=False)    
 
    ########################Differential entropy#########################
-    
-    x_truth = np.linspace(-5, 5, 10000)
-    pdf_truth = norm.pdf(x_truth)
-    diff_entropy = Diff_entropy(pdf_truth, x_truth)
 
-    n_generated = 10000  # samples number to generate
-    E_pdf = []
+    # Define the kernel list to use 
     kernels = ['gaussian', 'tophat', 'epanechnikov',
-               'exponential', 'linear', 'cosine']
-
-    n_samples = 10 ** np.arange(2, 7)
-    results = np.zeros((len(n_samples), len(kernels)))
+                'exponential', 'linear', 'cosine']
     
-    for i, kernel in enumerate(kernels):
-        diff_E = []
-        for j, n in enumerate(n_samples):
-            samples = np.random.normal(size=n)
-            x, est_pdf = kde_estimate(samples, kernel)
-            diff_E.append(Diff_entropy(est_pdf, x))
+    # Define the estimation methods to use for the optimal number of bins
+    bw_methods = ['fd', 'doane', 'scott', 'stone', 'rice', 'sturges', 'sqrt']
 
-        results[:, i] = diff_E
-
-    df = pd.DataFrame({'n samples': n_samples})
-
-    df[kernels] = results
-    df = df.set_index('n samples')
-    print(df)
-
-    plot_settings() # for latex document
-    fig, axs = plt.subplots(1,2, constrained_layout=True) 
-    df.plot(ax=axs[0], logx=True, lw=0.5)
-    axs[0].plot(n_samples, [diff_entropy] * len(n_samples),
-                label='truth pdf', lw=0.5)
-    (diff_entropy - df).plot(ax=axs[1], logx=True, lw=0.5, legend=False)
-    legend = axs[0].legend()
-    legend.get_frame().set_alpha(0.5)
-
-    for i in range(2):
-        axs[i].set_xlabel(r'$ \mathbf{n° samples} $')
-        axs[i].grid()
+    # Define the N samples size array
+    n_samples = 10 ** np.arange(2, 6)    
     
-    axs[1].set_xlabel(r'$ \mathbf{n° samples} $')
-    axs[0].set_ylabel(r'$ \mathbf{h_{2}(p_{0})} $')
-    axs[1].set_ylabel(r'$ \mathbf{h_{2}(p_{0}) - h_{2}(\hat{p_{0}})} $')
-    plt.savefig(f'../Results/{file}/estimated_diff_entropy_vs_p0.png', dpi=800)
+    # Define the number of worker processes to use
+    processes = cpu_count() - 2
+    with Pool(processes=processes) as pool:
+        results = pool.starmap(sampling,
+                               product(n_samples, bw_methods, kernels))
+
+    # Save the results as .csv file
+    df = pd.DataFrame(product(n_samples, bw_methods, kernels),
+                      columns=['n_samples', 'bw_method', 'kernel'])
+    
+    df['results'] = results
+    df.to_csv('../Results/assignment_no_2/diff_entropy_2.csv', index=False)
+    
