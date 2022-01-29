@@ -1,9 +1,10 @@
 #!/usr/bin/env python3.9.5
 import numpy as np
+from scipy.special import xlogy
 from scipy.integrate import simpson 
-import warnings
+#import warnings
 
-warnings.filterwarnings("ignore")
+#warnings.filterwarnings("ignore")
 
 
 def Entropy(px: np.array) -> float:
@@ -16,8 +17,8 @@ def Entropy(px: np.array) -> float:
     Return:
         float: entropy (bits units)
     """
-    return - np.nansum(px * np.log2(px))
-
+    return - np.sum(xlogy(px, px))
+    
 
 def Joint_entropy(pxy: np.ndarray) -> float:
     """Compute the joint entropy of two generic discrete random 
@@ -29,7 +30,7 @@ def Joint_entropy(pxy: np.ndarray) -> float:
     Return:
         float: joint entropy (bits units)
     """
-    return - np.nansum(pxy * np.log2(pxy))
+    return - np.sum(xlogy(pxy, pxy))
 
 
 def Cond_entropy(pxy: np.ndarray, py: np.array) -> float:
@@ -154,14 +155,14 @@ def Norm_mutual_information3(pxy: np.ndarray, px: np.array, py: np.array) -> flo
     return Mutual_information(pxy, px, py) / np.sqrt(Entropy(px) * Entropy(py))
 
 
-def Diff_entropy(fx: np.array, dx: np.array) -> float:
+def Diff_entropy(fx: np.array, x: np.array) -> float:
     """Compute the differential entropy using the following formula:
        h(X) = -\int_{a}^{b} f_{X}(x) \ ln(f_{X}(x)) dx
 
     Args:
         fx (np.array): pdf of the continuos random variable
-        dx (np.array): the points at which fx is sampled
+        x (np.array): the points at which fx is sampled
     """
-    integrand = - fx * np.log2(fx)
+    integrand = - xlogy(fx, fx)
     # Use the simpson integral method
-    return simpson(y=integrand, x=dx)
+    return simpson(y=integrand, x=x)
