@@ -1,4 +1,5 @@
 #!/usr/bin/env python3.9.5
+import numpy as np
 
 
 def plot_settings():
@@ -33,7 +34,6 @@ def power_10_axis_formatter(ax, axis):
 
 def plot_kernels(ax):
     """Visualize the KDE kernels available in Scikit-learn"""
-    import numpy as np
     from sklearn.neighbors import KernelDensity
     ax.grid()
 
