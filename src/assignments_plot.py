@@ -22,7 +22,7 @@ if __name__ == '__main__':
     plot_settings() # for latex document
     plt.plot(p0, entropy, 'b', lw=0.7)
     plt.xlabel(r'$ p_{0} $')
-    plt.ylabel(r'$ H(p_{0})\hspace{0.2}[bit] $')
+    plt.ylabel(r'$ H(p_{0})\hspace{0.2}[nat] $')
     plt.grid()
     plt.tight_layout()
     plt.savefig(f'../Results/{file}/entropy_vs_p0.png', dpi=800)
@@ -57,8 +57,8 @@ if __name__ == '__main__':
     for lh in leg.legendHandles: 
         lh.set_linewidth(2)
 
-    axs[0].set_ylabel(r'$ H(p_{0})\hspace{0.2}[bit] $')
-    axs[1].set_ylabel(r'$ (H(p_{0}) - H(\hat{p_{0}}))\hspace{0.2}[bit]} $')
+    axs[0].set_ylabel(r'$ H(p_{0})\hspace{0.2}[nat] $')
+    axs[1].set_ylabel(r'$ (H(p_{0}) - H(\hat{p_{0}}))\hspace{0.2}[nat]} $')
     power_10_axis_formatter(axs[1], 'y')
 
     plt.savefig(f'../Results/{file}/estimated_entropy_vs_p0.png', dpi=800)
@@ -148,7 +148,6 @@ if __name__ == '__main__':
         arr = axs[i].get_xticks()
         axs[i].set_xticks(arr[::4])
 
-    fig.suptitle('Estimated p.m.f. for all the features', weight='bold')
     plt.savefig(f'../Results/{file}/estimated_pmf_features.png', dpi=800)
 
     print(f'{file}_plot is done. \n')
