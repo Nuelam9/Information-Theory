@@ -70,4 +70,3 @@ def kde_estimate(data: np.array, kernel: str,
     # Compute the log-likelihood of the samples
     log_pdf = kde_skl.score_samples(x_grid[:, np.newaxis])
     return x_grid, np.exp(log_pdf)
-
