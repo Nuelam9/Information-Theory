@@ -15,7 +15,7 @@ def Entropy(px: np.array) -> float:
         px (np.array): p.m.f.
 
     Return:
-        float: entropy (bits units)
+        float: entropy (nats units)
     """
     return - np.sum(xlogy(px, px))
     
@@ -28,7 +28,7 @@ def Joint_entropy(pxy: np.ndarray) -> float:
         pxy (np.ndarray): joint p.m.f.
 
     Return:
-        float: joint entropy (bits units)
+        float: joint entropy (nats units)
     """
     return - np.sum(xlogy(pxy, pxy))
 
@@ -44,7 +44,7 @@ def Cond_entropy(pxy: np.ndarray, py: np.array) -> float:
         py (np.array): marginal p.m.f. of r.v. Y
 
     Return:
-        float: conditional entropy (bits units)
+        float: conditional entropy (nats units)
     """
     return Joint_entropy(pxy) - Entropy(py) 
 
@@ -53,7 +53,7 @@ def Mutual_information(pxy: np.ndarray, px: np.array, py: np.array) -> float:
     """Compute the mutual information of two generic discrete random 
        variables given their joint and marginal p.m.f., using the 
        relation:
-                I(X,Y) = H(X) + H(Y) - H(X|Y)
+                I(X;Y) = H(X) + H(Y) - H(X,Y)
 
     Args:
         pxy (np.ndarray): joint p.m.f.
@@ -61,7 +61,7 @@ def Mutual_information(pxy: np.ndarray, px: np.array, py: np.array) -> float:
         py (np.array): marginal p.m.f. of r.v. Y
 
     Return:
-        float: mutual information (bits units)
+        float: mutual information (nats units)
     """
     return Entropy(px) + Entropy(py) - Joint_entropy(pxy)
 
@@ -78,7 +78,7 @@ def Norm_cond_entropy(pxy: np.ndarray, px: np.array) -> float:
         px (np.array): marginal p.m.f. of r.v. X
 
     Return:
-        float: normalized conditional entropy (bits units)
+        float: normalized conditional entropy (nats units)
     """
     return Cond_entropy(pxy, px) / Entropy(px)
 
@@ -87,7 +87,7 @@ def Norm_joint_entropy(pxy: np.ndarray, px: np.array, py: np.array) -> float:
     """Compute the normalized joint entropy of two generic discrete 
        random variables given their joint and marginal p.m.f., using the 
        formula:
-               eta_JE(X,Y) = 1 - I(X,Y) / (H(X) + H(Y)) 
+               eta_JE(X,Y) = 1 - I(X;Y) / (H(X) + H(Y)) 
        and it is bounded in the interval [1/2, 1].
 
     Args:
@@ -96,7 +96,7 @@ def Norm_joint_entropy(pxy: np.ndarray, px: np.array, py: np.array) -> float:
         py (np.array): marginal p.m.f. of r.v. Y
 
     Return:
-        float: normalized joint entropy (bits units)
+        float: normalized joint entropy (nats units)
     """
     return 1. - Mutual_information(pxy, px, py) / (Entropy(px) + Entropy(py))
 
@@ -105,7 +105,7 @@ def Norm_mutual_information1(pxy: np.ndarray, px: np.array, py: np.array) -> flo
     """Compute the normalized mutual information of type 1 of two 
        generic discrete random variables given their joint and marginal 
        p.m.f., using the relation:
-                    eta_MI1(X,Y) = 1 / eta_JE(X,Y) - 1
+                    eta_MI1(X;Y) = 1 / eta_JE(X,Y) - 1
        and it is bounded in the interval [0, 1].
 
     Args:
@@ -114,7 +114,7 @@ def Norm_mutual_information1(pxy: np.ndarray, px: np.array, py: np.array) -> flo
         py (np.array): marginal p.m.f. of r.v. Y
 
     Return:
-        float: normalized mutual information of type 1 (bits units)
+        float: normalized mutual information of type 1 (nats units)
     """
     return 1. / Norm_joint_entropy(pxy, px, py) - 1.
 
@@ -123,7 +123,7 @@ def Norm_mutual_information2(pxy: np.ndarray, px: np.array, py: np.array) -> flo
     """Compute the normalized mutual information of type 2 of two 
        generic discrete random variables given their joint and marginal 
        p.m.f., using the relation:
-                    eta_MI2(X,Y) = 1 + eta_MI1(X,Y)
+                    eta_MI2(X;Y) = 1 + eta_MI1(X;Y)
        and it is bounded in the interval [1, 2].
 
     Args:
@@ -132,7 +132,7 @@ def Norm_mutual_information2(pxy: np.ndarray, px: np.array, py: np.array) -> flo
         py (np.array): marginal p.m.f. of r.v. Y
 
     Return:
-        float: normalized mutual information of type 2 (bits units)
+        float: normalized mutual information of type 2 (nats units)
     """
     return 1. + Norm_mutual_information1(pxy, px, py)
 
@@ -141,7 +141,7 @@ def Norm_mutual_information3(pxy: np.ndarray, px: np.array, py: np.array) -> flo
     """Compute the normalized mutual information of type 3 of two 
        generic discrete random variables given their joint and marginal 
        p.m.f., using the relation:
-                    eta_MI3(X,Y) = I(X,Y) / sqrt(H(X) * H(Y))
+                    eta_MI3(X;Y) = I(X;Y) / sqrt(H(X) * H(Y))
        and it is bounded in the interval [0, 1].
 
     Args:
@@ -150,7 +150,7 @@ def Norm_mutual_information3(pxy: np.ndarray, px: np.array, py: np.array) -> flo
         py (np.array): marginal p.m.f. of r.v. Y
 
     Return:
-        float: normalized mutual information of type 3 (bits units)
+        float: normalized mutual information of type 3 (nats units)
     """
     return Mutual_information(pxy, px, py) / np.sqrt(Entropy(px) * Entropy(py))
 
