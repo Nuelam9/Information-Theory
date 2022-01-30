@@ -39,9 +39,8 @@ if __name__ == "__main__":
     # Saving x_vals list as .csv file
     file = os.path.basename(__file__).split('.')[0]
     df = pd.DataFrame(x_vals, index=features).T
+    # Replacing nan values with zeros for a matter of plot settings
     df = df.fillna(0).astype('int')
-
-    print(df.info())
 
     df.to_csv(f'../Results/{file}/x_vals_1.csv', index=False)
 
@@ -70,6 +69,10 @@ if __name__ == "__main__":
     # Make symmetric the Mutual Information matrix 
     i_lower = np.tril_indices(n, -1)
     mi_mat[i_lower] = mi_mat.T[i_lower]
+
+    # Fill the diagonal with the entropy values, because of the relation
+    # I(X;X) = H(X)
+    np.fill_diagonal(mi_mat, entropies)
 
     # Print mutual information matrix
     print(pd.DataFrame(mi_mat, columns=features, index=features))
