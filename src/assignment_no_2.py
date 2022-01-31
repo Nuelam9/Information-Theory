@@ -82,6 +82,7 @@ if __name__ == '__main__':
     # Define the N samples size array
     n_samples = 10 ** np.arange(2, 6)    
     
+    # Parallelize the code to improve the esecution time
     # Define the number of worker processes to use
     processes = cpu_count() - 2
     with Pool(processes=processes) as pool:
