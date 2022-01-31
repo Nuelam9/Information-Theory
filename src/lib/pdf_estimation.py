@@ -59,7 +59,6 @@ def kde_estimate(data: np.array, kernel: str,
                                    - 'fd' (Freedman Diaconis Estimator);
                                    - doane';
                                    - 'scott';
-                                   - 'stone';
                                    - 'rice';
                                    - 'sturges';
                                    - 'sqrt'.
