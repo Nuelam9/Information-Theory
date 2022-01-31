@@ -2,9 +2,6 @@
 import numpy as np
 from scipy.special import xlogy
 from scipy.integrate import simpson 
-#import warnings
-
-#warnings.filterwarnings("ignore")
 
 
 def Entropy(px: np.array) -> float:
