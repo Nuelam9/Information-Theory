@@ -55,6 +55,14 @@ def kde_estimate(data: np.array, kernel: str,
         kernel (str): kernel form
         bw_method (str, optional): methods to estimate the optimal 
                                    number of bins. Defaults to 'doane'.
+                                   Possible choices are:
+                                   - 'fd' (Freedman Diaconis Estimator);
+                                   - doane';
+                                   - 'scott';
+                                   - 'stone';
+                                   - 'rice';
+                                   - 'sturges';
+                                   - 'sqrt'.
 
     Returns:
         Tuple[np.ndarray, np.ndarray]: grid for plot, 
