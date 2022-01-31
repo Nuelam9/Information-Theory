@@ -32,20 +32,23 @@ def power_10_axis_formatter(ax, axis):
         ax.yaxis.set_major_formatter(formatter) 
 
 
-def plot_kernels(ax):
-    """Visualize the KDE kernels available in Scikit-learn"""
+def plot_kernels(ax, kernels):
+    """Visualize the KDE kernels"""
     from sklearn.neighbors import KernelDensity
     ax.grid()
 
     X_src = np.zeros((1, 1))
     x_grid = np.linspace(-3, 3, 1000)
 
-    for kernel in ['gaussian', 'tophat', 'epanechnikov',
-                   'exponential', 'linear', 'cosine']:
-        log_dens = KernelDensity(kernel=kernel).fit(X_src).score_samples(x_grid[:, None])
-        ax.plot(x_grid, np.exp(log_dens), lw=0.5, label=kernel)
+    for kernel in kernels:
+        kde = KernelDensity(kernel=kernel).fit(X_src)
+        log_dens = kde.score_samples(x_grid[:, None])
+        ax.plot(x_grid, np.exp(log_dens), lw=0.7, label=kernel.capitalize())
     ax.set_ylim(0, 1.05)
     ax.set_xlim(-2.9, 2.9)
-    ax.set_xlabel('x')
-    #ax.legend()
+    ax.set_xlabel(r'$ x $')
     ax.set_title('Kernels')
+    leg = ax.legend()
+    for lh in leg.legendHandles: 
+        lh.set_linewidth(2)
+    
