@@ -73,11 +73,24 @@ if __name__ == '__main__':
    ########################Differential entropy#########################
 
     # Define the kernel list to use 
-    kernels = ['gaussian', 'tophat', 'epanechnikov',
-                'exponential', 'linear', 'cosine']
+    kernels = [
+        'gaussian',
+        'tophat',
+        'epanechnikov',
+        'exponential',
+        'linear',
+        'cosine'
+        ]
     
     # Define the estimation methods to use for the optimal number of bins
-    bw_methods = ['fd', 'doane', 'scott', 'stone', 'rice', 'sturges', 'sqrt']
+    bw_methods = [
+        'fd',
+        'doane',
+        'scott',
+        'rice',
+        'sturges',
+        'sqrt'
+        ]
 
     # Define the N samples size array
     n_samples = 10 ** np.arange(2, 6)    
