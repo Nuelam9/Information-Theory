@@ -2,7 +2,6 @@ import glob
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
-from matplotlib.gridspec import GridSpec
 from lib.analysis_plot import plot_settings, plot_kernels, \
                               power_10_axis_formatter
 from lib.information_lib import Diff_entropy
@@ -85,27 +84,16 @@ if __name__ == '__main__':
     plot_kernels(ax, kernels)
     plt.savefig(f'../Results/{file}/kernels.png', dpi=800)
     
-    fig = plt.figure(figsize=(15, 15), constrained_layout=True)
+    fig, axs = plt.subplots(2, 3, figsize=(10, 8), constrained_layout=True)
+    axs = axs.flatten()
     plot_settings()
-    gs = GridSpec(6, 6, figure=fig)
-
-    ax1 = fig.add_subplot(gs[:2, :2])
-    ax2 = fig.add_subplot(gs[:2, 2:4])
-    ax3 = fig.add_subplot(gs[:2, 4:])
-    ax4 = fig.add_subplot(gs[2:4, :2])
-    ax5 = fig.add_subplot(gs[2:4, 2:4])
-    ax6 = fig.add_subplot(gs[2:4, 4:])
-    ax7 = fig.add_subplot(gs[4:, 2:4])
 
     kernels = df['kernel'].unique()
     methods = df['bw_method'].unique()
     n_samples = df.n_samples.unique()
 
-    axs = [globals()[f'ax{i}'] for i in range(1, len(methods) + 1)]
-
     colors = ['orange', 'deepskyblue', 'green', 'red', 'grey', 'purple']
 
-    plot_settings()
     for i, method in enumerate(methods):       
         for j, kernel in enumerate(kernels):
             tmp = df.copy()
