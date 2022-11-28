@@ -41,5 +41,4 @@ def Gaussian(x: np.array, muj: float, varj: float) -> np.array:
     Returns:
         np.array: [description]
     """   
-    pdf = np.sqrt(2. * np.pi * varj) * np.exp(- 0.5 * (x - muj) ** 2. / varj)
-    return pdf
+    return np.sqrt(2. * np.pi * varj) * np.exp(- 0.5 * (x - muj) ** 2. / varj)
