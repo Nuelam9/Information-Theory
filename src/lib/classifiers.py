@@ -60,30 +60,29 @@ def Naive_Bayes(X_train: np.ndarray, X_test: np.ndarray,
     # Computing the prior distribution
     Prior = np.unique(y_train, return_counts=True)[1] / y_train.size
 
-    P_Xc_train = []
-    # Computing the P(X_i|c) for each feature
-    for i in range(n_X):
-        P_Xc_train.append(KDEMultivariateConditional(endog=X_train[:, i],
-                                                        exog=y_train, 
-                                                        dep_type='c', 
-                                                        indep_type='u', 
-                                                        bw='normal_reference').pdf)
+    P_Xc_train = [
+        KDEMultivariateConditional(endog=X_train[:, i],
+                                   exog=y_train,
+                                   dep_type='c',
+                                   indep_type='u',
+                                   bw='normal_reference').pdf for i in range(n_X)]
+
     # Computing the joint probability P(X)
     P_X_train = KDEMultivariate(X_train, var_type='cccc').pdf
-    
+
     n = X_test.shape[0]
     c = np.zeros((n, n_classes))
-    
+
     for d in range(n):
         for i in range(n_classes):
             tmp = 1
             # Computing the P(X|c) = product of P(x_i|c)
             for j in range(n_X):
                 tmp *= P_Xc_train[j]([X_test[d, j]], [i])
-            
+
             # Computing the conditional probability P(c|X) = P(X|c) * P(c) / P(X)
             c[d, i] = tmp * Prior[i] / P_X_train(X_test[d, :])
-    
+
     # Returning the class prediction
     return np.argmax(c, axis=1)
     
