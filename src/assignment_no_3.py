@@ -8,7 +8,6 @@ from itertools import combinations
 import pandas as pd
 
 
-
 if __name__ == "__main__":
     # Load the iris dataset
     df = sns.load_dataset("iris")
